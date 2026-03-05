@@ -2,25 +2,25 @@
 
 A zero-configuration BLoC state inspector with a built-in web dashboard.
 
-Attach it as a `BlocObserver` and open your browser — no external servers,
+Attach it as a `BlocObserver` and open your browser - no external servers,
 no extra packages, no setup.
 
 ![bloc_preview demo](https://raw.githubusercontent.com/janrydzewski/bloc_preview/main/assets/preview.gif)
 
 ## Features
 
-- **Zero configuration** — one line of code to get started.
-- **Built-in web dashboard** — served locally, no external dependencies.
-- **Real-time updates** — state changes, events, and errors streamed via WebSocket.
-- **State diff** — highlights exactly which fields changed between transitions, like a git diff.
-- **Performance timeline** — measures milliseconds between events to spot slow transitions.
-- **Snapshot export** — copy any state as JSON to clipboard for bug reports or tests.
-- **Bloc lifecycle map** — visualises when each bloc was created and closed on a timeline, helping detect memory leaks.
-- **Event frequency monitor** — detects event storms and shows per-bloc event rates with warnings.
-- **State size tracker** — reports serialised state size so you can spot unbounded growth.
-- **Automatic serialization** — works with `toJson()`, `JsonEncodable`, or plain `toString()`.
-- **Filterable timeline** — search by bloc name or event type.
-- **Collapsible state tree** — inspect deeply nested states with ease.
+- **Zero configuration** - one line of code to get started.
+- **Built-in web dashboard** - served locally, no external dependencies.
+- **Real-time updates** - state changes, events, and errors streamed via WebSocket.
+- **State diff** - highlights exactly which fields changed between transitions, like a git diff.
+- **Performance timeline** - measures milliseconds between events to spot slow transitions.
+- **Snapshot export** - copy any state as JSON to clipboard for bug reports or tests.
+- **Bloc lifecycle map** - visualises when each bloc was created and closed on a timeline, helping detect memory leaks.
+- **Event frequency monitor** - detects event storms and shows per-bloc event rates with warnings.
+- **State size tracker** - reports serialised state size so you can spot unbounded growth.
+- **Automatic serialization** - works with `toJson()`, `JsonEncodable`, or plain `toString()`.
+- **Filterable timeline** - search by bloc name or event type.
+- **Collapsible state tree** - inspect deeply nested states with ease.
 
 ## Getting started
 
@@ -73,7 +73,7 @@ class CounterState implements JsonEncodable {
 ```
 
 If your state already has a `toJson()` method (e.g. from `json_serializable`
-or `freezed`), it will be picked up automatically — no extra interface needed.
+or `freezed`), it will be picked up automatically - no extra interface needed.
 
 States without `toJson()` are serialized by parsing their `toString()` output
 into a structured tree.
@@ -94,13 +94,13 @@ await observer.dispose();
 
 Live event feed showing every create, transition, change, close, and error.
 Each row displays the **duration in milliseconds** since the last event for
-that bloc — slow transitions (>100ms) are highlighted in red.
+that bloc - slow transitions (>100ms) are highlighted in red.
 
 Click any event to open the detail panel with:
-- **State diff** — red/green comparison of previous vs current state
-- **Current state** — collapsible tree view
-- **Event data** — the triggering event
-- **Copy JSON** — export the state to clipboard
+- **State diff** - red/green comparison of previous vs current state
+- **Current state** - collapsible tree view
+- **Event data** - the triggering event
+- **Copy JSON** - export the state to clipboard
 
 ### Lifecycle
 
@@ -113,9 +113,9 @@ detect:
 ### Analytics
 
 Two data tables:
-- **Event frequency** — events per second for each bloc, with visual bars and
+- **Event frequency** - events per second for each bloc, with visual bars and
   red warnings when the rate exceeds 10 ev/s (event storm detection)
-- **State size** — serialised size of each bloc's current state, with warnings
+- **State size** - serialised size of each bloc's current state, with warnings
   for states exceeding 5 KB
 
 ## How it works
