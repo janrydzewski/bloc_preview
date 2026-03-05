@@ -5,6 +5,8 @@ A zero-configuration BLoC state inspector with a built-in web dashboard.
 Attach it as a `BlocObserver` and open your browser — no external servers,
 no extra packages, no setup.
 
+![bloc_preview demo](https://raw.githubusercontent.com/janrydzewski/bloc_preview/main/assets/preview.gif)
+
 ## Features
 
 - **Zero configuration** — one line of code to get started.
