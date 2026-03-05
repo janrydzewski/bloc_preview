@@ -1,0 +1,28 @@
+name: bloc_preview
+description: >-
+  A zero-configuration BLoC state inspector with a built-in web dashboard.
+  Attach it as a BlocObserver to visualize state changes, events, and errors
+  in real time directly in your browser — no external tools required.
+version: 1.0.0
+repository: https://github.com/janrydzewski/bloc_preview
+issue_tracker: https://github.com/janrydzewski/bloc_preview/issues
+topics:
+  - bloc
+  - state-management
+  - debugging
+  - devtools
+  - inspector
+
+environment:
+  sdk: ^3.10.7
+  flutter: ">=3.38.0"
+
+dependencies:
+  bloc: ^9.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
