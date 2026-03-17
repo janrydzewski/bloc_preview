@@ -1,3 +1,10 @@
+## 1.0.2
+
+- Fixed `toString()` parser truncating values with non-ASCII characters (e.g.
+  Polish letters like "Biały") in lists and object fields.
+- Fixed URLs inside lists being truncated to the scheme prefix (`"https"`
+  instead of the full URL), causing only the first list item to be parsed.
+
 ## 1.0.1
 
 - Fixed package description length for pub.dev conventions.

@@ -2,7 +2,7 @@ name: bloc_preview
 description: >-
   A zero-config BLoC state inspector with a built-in web dashboard.
   Visualize state changes, events, and errors in real time in your browser.
-version: 1.0.1
+version: 1.0.2
 repository: https://github.com/janrydzewski/bloc_preview
 issue_tracker: https://github.com/janrydzewski/bloc_preview/issues
 topics:

@@ -178,8 +178,19 @@ class _NotationScanner {
   // -- Identifiers / Dart objects -------------------------------------------
 
   dynamic _scanIdentifierOrObject() {
+    final saved = _cursor;
     final typeName = _readDottedIdentifier();
     _skipWhitespace();
+
+    if (!_atEnd &&
+        _peek != '(' &&
+        _peek != ',' &&
+        _peek != ')' &&
+        _peek != ']' &&
+        _peek != '}') {
+      _cursor = saved;
+      return _scanRawToken();
+    }
 
     // No parentheses — this is an enum value or a plain word.
     if (_atEnd || _peek != '(') return typeName;
