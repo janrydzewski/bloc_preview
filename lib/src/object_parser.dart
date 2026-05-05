@@ -87,13 +87,18 @@ class _NotationScanner {
     if (_peek == '[') return _scanList();
     if (_peek == '{') return _scanMap();
 
-    // Numbers (including negative)
+    // Numbers (including negative). Parse as numeric only when the full token
+    // is a number; otherwise keep the raw token (e.g. ISO dates).
     if (_peek == '-' &&
         _cursor + 1 < _source.length &&
         _isDigit(_source[_cursor + 1])) {
-      return _scanNumber();
+      final token = _scanRawToken();
+      return _parseNumericToken(token) ?? token;
     }
-    if (_isDigit(_peek)) return _scanNumber();
+    if (_isDigit(_peek)) {
+      final token = _scanRawToken();
+      return _parseNumericToken(token) ?? token;
+    }
 
     // Quoted strings
     if (_peek == "'" || _peek == '"') return _scanQuotedString();
@@ -154,12 +159,12 @@ class _NotationScanner {
         _cursor++;
         break;
       }
-      final key = scanValue();
+      final key = _scanMapKey();
       _skipWhitespace();
       if (_peek == ':') {
         _cursor++;
         _skipWhitespace();
-        map[key.toString()] = scanValue();
+        map[key] = scanValue();
       }
       _skipWhitespace();
       if (_peek == ',') {
@@ -173,6 +178,19 @@ class _NotationScanner {
       break;
     }
     return map;
+  }
+
+  String _scanMapKey() {
+    _skipWhitespace();
+    if (_peek == "'" || _peek == '"') return _scanQuotedString();
+
+    final start = _cursor;
+    while (!_atEnd) {
+      final ch = _peek;
+      if (ch == ':' || ch == ',' || ch == '}') break;
+      _cursor++;
+    }
+    return _source.substring(start, _cursor).trim();
   }
 
   // -- Identifiers / Dart objects -------------------------------------------
@@ -303,13 +321,18 @@ class _NotationScanner {
     if (_peek == '[') return _scanList();
     if (_peek == '{') return _scanMap();
 
-    // Numbers
+    // Numbers. Parse as numeric only when the full field token is a number;
+    // otherwise keep the raw token (e.g. ISO dates).
     if (_peek == '-' &&
         _cursor + 1 < _source.length &&
         _isDigit(_source[_cursor + 1])) {
-      return _scanNumber();
+      final token = _scanRawFieldValue();
+      return _parseNumericToken(token) ?? token;
     }
-    if (_isDigit(_peek)) return _scanNumber();
+    if (_isDigit(_peek)) {
+      final token = _scanRawFieldValue();
+      return _parseNumericToken(token) ?? token;
+    }
 
     // Quoted strings
     if (_peek == "'" || _peek == '"') return _scanQuotedString();
@@ -418,27 +441,6 @@ class _NotationScanner {
     return result;
   }
 
-  // -- Numbers --------------------------------------------------------------
-
-  num _scanNumber() {
-    final start = _cursor;
-    if (_peek == '-') _cursor++;
-    while (!_atEnd && _isDigit(_peek)) {
-      _cursor++;
-    }
-    if (!_atEnd &&
-        _peek == '.' &&
-        _cursor + 1 < _source.length &&
-        _isDigit(_source[_cursor + 1])) {
-      _cursor++; // skip .
-      while (!_atEnd && _isDigit(_peek)) {
-        _cursor++;
-      }
-      return double.parse(_source.substring(start, _cursor));
-    }
-    return int.parse(_source.substring(start, _cursor));
-  }
-
   // -- Quoted strings -------------------------------------------------------
 
   String _scanQuotedString() {
@@ -497,6 +499,13 @@ class _NotationScanner {
     return _source.substring(start, _cursor).trim();
   }
 
+  num? _parseNumericToken(String token) {
+    final trimmed = token.trim();
+    if (!_numericPattern.hasMatch(trimmed)) return null;
+    if (trimmed.contains('.')) return double.parse(trimmed);
+    return int.parse(trimmed);
+  }
+
   // -- Character tests ------------------------------------------------------
 
   static bool _isSpace(String ch) =>
@@ -513,4 +522,6 @@ class _NotationScanner {
   }
 
   static bool _isIdentChar(String ch) => _isIdentStart(ch) || _isDigit(ch);
+
+  static final RegExp _numericPattern = RegExp(r'^-?\d+(?:\.\d+)?$');
 }
