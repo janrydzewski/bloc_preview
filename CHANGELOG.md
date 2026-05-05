@@ -1,3 +1,14 @@
+## 1.0.3
+
+- Fixed `toString()` parser truncating ISO-8601 values (for example
+  `2026-05-05T12:13:14.123Z`) to just the leading year.
+- Improved numeric token parsing so mixed tokens that start with digits
+  (e.g. timestamps, semantic versions, UUID-like values) remain full strings.
+- Fixed map parsing edge case where unquoted keys like `createdAt: ...`
+  could lead to incorrect value parsing.
+- Added regression tests for common API payload patterns (ISO dates with
+  offsets, URLs, JWT-like tokens, semantic versions, numeric values).
+
 ## 1.0.2
 
 - Fixed `toString()` parser truncating values with non-ASCII characters (e.g.
